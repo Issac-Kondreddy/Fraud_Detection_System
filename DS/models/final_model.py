@@ -21,9 +21,9 @@ y = preprocessed_data['Class']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Train LightGBM (GBDT) model
-lgb_model = lgb.LGBMClassifier(n_estimators=200, max_depth=6, learning_rate=0.1)
+lgb_model = lgb.LGBMClassifier(n_estimators=400, max_depth=15, learning_rate=0.02,class_weight='balanced')
 lgb_model.fit(X_train, y_train)
-
+ç
 # Get GBDT predictions (probabilities)
 train_gbdt_predictions = lgb_model.predict_proba(X_train)[:, 1].reshape(-1, 1)
 test_gbdt_predictions = lgb_model.predict_proba(X_test)[:, 1].reshape(-1, 1)

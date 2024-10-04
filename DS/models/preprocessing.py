@@ -2,28 +2,32 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
+import joblib
 
 # Load the dataset
-data = pd.read_csv(r'DS/data/creditcard.csv')
+data = pd.read_csv(r'/Users/issackondreddy/Desktop/Projects/Fraud Detection System/DS/data/creditcard.csv')
 print("Original Dataset shape:", data.shape)
 
 # Initialize the scaler
 scaler = StandardScaler()
 
-# Scale the 'Amount' and 'Time' columns
+# Scale the 'Amount' and 'Time' columns and add to the dataset
 data['Scaled_Amount'] = scaler.fit_transform(data['Amount'].values.reshape(-1, 1))
 data['Scaled_Time'] = scaler.fit_transform(data['Time'].values.reshape(-1, 1))
 
 # Drop the original 'Amount' and 'Time' columns
 data = data.drop(['Amount', 'Time'], axis=1)
 
-# Reorganize columns
-scaled_columns = ['Scaled_Time', 'Scaled_Amount'] + [col for col in data.columns if col not in ['Scaled_Time', 'Scaled_Amount']]
-data = data[scaled_columns]
-
-# Split features and target
-X = data.drop('Class', axis=1)
+# Reorganize columns: Scaled_Time, Scaled_Amount first, then V1, V2, ..., V28, and finally Class
+scaled_columns = ['Scaled_Time', 'Scaled_Amount'] + [col for col in data.columns if col not in ['Scaled_Time', 'Scaled_Amount', 'Class']]
+X = data[scaled_columns]
 y = data['Class']
+
+# Fit the scaler on the entire feature set (after 'Amount' and 'Time' are scaled)
+scaler.fit(X)  # Now fit on the entire set of features
+
+# Save the fitted scaler for later use in predictions
+joblib.dump(scaler, 'DS/models/scaler.pkl')  # Save the scaler
 
 # Handle class imbalance using SMOTE
 smote = SMOTE(random_state=42)
