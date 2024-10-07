@@ -161,17 +161,25 @@ sample_data = X_test_hybrid[sample_index].reshape(1, -1)
 
 # Define a prediction function that returns probabilities using model.predict()
 def predict_fn(data):
-    return model.predict(data).reshape(-1, 1)
+    # Get the probability of class 1 (fraud) using model.predict()
+    class_1_proba = model.predict(data).reshape(-1, 1)
+    
+    # Class 0 probability is just 1 - class 1 probability
+    class_0_proba = 1 - class_1_proba
+    
+    # Return both probabilities as a 2D array
+    return np.hstack([class_0_proba, class_1_proba])
+
 
 # Use LIME to explain the prediction for this instance
 explanation = explainer.explain_instance(
     data_row=sample_data[0],  # The sample data you want to explain
-    predict_fn=predict_fn,  # Use model.predict instead of model.predict_proba
+    predict_fn=predict_fn,  # Use updated prediction function
     num_features=10  # Show top 10 most important features
 )
 
 # Show the explanation
 explanation.show_in_notebook(show_table=True, show_all=False)
 
-# Alternatively, if you are not using a notebook, save the explanation to a file
+# Save the explanation to a file if not using a notebook
 explanation.save_to_file('lime_explanation.html')
