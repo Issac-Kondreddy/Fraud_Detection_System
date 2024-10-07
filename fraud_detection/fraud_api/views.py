@@ -31,7 +31,7 @@ except Exception as e:
     logger.error(f"Error loading models: {e}")
     scaler = None
 # Fraud detection threshold (set in settings.py or default)
-FRAUD_THRESHOLD = getattr(settings, 'FRAUD_THRESHOLD', 0.39)
+FRAUD_THRESHOLD = getattr(settings, 'FRAUD_THRESHOLD', 0.85)
 
 # Render the frontend HTML page
 def index(request):
