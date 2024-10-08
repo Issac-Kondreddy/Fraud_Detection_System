@@ -24,7 +24,9 @@ SECRET_KEY = "django-insecure--khjk=^*r$$p275m1hjrn(enc8kezy-9w0-kxu1j4)!%tp!^w7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# In settings.py
+ALLOWED_HOSTS = ['fraud-detection-env.eba-2ukjbnvm.us-west-2.elasticbeanstalk.com', 'localhost', '127.0.0.1']
+
 
 
 # Application definition

@@ -32,3 +32,8 @@ logs/
 
 # Ignore Jupyter Notebook outputs (optional)
 notebooks/*.ipynb
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
